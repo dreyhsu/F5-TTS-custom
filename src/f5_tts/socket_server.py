@@ -224,12 +224,12 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--ckpt_file",
-        default=str(hf_hub_download(repo_id="SWivid/F5-TTS", filename="F5TTS_v1_Base/model_1250000.safetensors")),
+        default=r'D:\Dre\F5-TTS\model\F5-TTS\model_1250000.safetensors',
         help="Path to the model checkpoint file",
     )
     parser.add_argument(
         "--vocab_file",
-        default="",
+        default=r"D:\Dre\F5-TTS\model\F5-TTS\vocab.txt",
         help="Path to the vocab file if customized",
     )
 

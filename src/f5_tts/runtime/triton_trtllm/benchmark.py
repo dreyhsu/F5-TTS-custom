@@ -213,7 +213,7 @@ def init_distributed():
 
 
 def load_vocoder(
-    vocoder_name="vocos", is_local=False, local_path="", device="cuda", hf_cache_dir=None, vocoder_trt_engine_path=None
+    vocoder_name="vocos", is_local=True, local_path="model/vocos-mel-24khz", device="cuda", hf_cache_dir=None, vocoder_trt_engine_path=None
 ):
     if vocoder_name == "vocos":
         if vocoder_trt_engine_path is not None:
