@@ -1,3 +1,8 @@
+set HF_HUB_OFFLINE=1
+set TRANSFORMERS_OFFLINE=1
+set PATH=D:\ffmpeg-7.1.1-full_build-shared\bin;%PATH%
+f5-tts_infer-gradio --port 7860
+
 # F5-TTS: A Fairytaler that Fakes Fluent and Faithful Speech with Flow Matching
 
 [![python](https://img.shields.io/badge/Python-3.10-brightgreen)](https://github.com/SWivid/F5-TTS)

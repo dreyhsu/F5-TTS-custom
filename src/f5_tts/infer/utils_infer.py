@@ -4,9 +4,11 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
-
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"  # for MPS device compatibility
 sys.path.append(f"{os.path.dirname(os.path.abspath(__file__))}/../../third_party/BigVGAN/")
+_ffmpeg_dll_dir = os.add_dll_directory(
+    r"D:\ffmpeg-7.1.1-full_build-shared\bin"
+)
 
 import hashlib
 import re
@@ -103,7 +105,7 @@ def chunk_text(text, max_chars=135):
 
 
 # load vocoder
-def load_vocoder(vocoder_name="vocos", is_local=False, local_path="", device=device, hf_cache_dir=None):
+def load_vocoder(vocoder_name="vocos", is_local=True, local_path="model/vocos-mel-24khz", device=device, hf_cache_dir=None):
     if vocoder_name == "vocos":
         # vocoder = Vocos.from_pretrained("charactr/vocos-mel-24khz").to(device)
         if is_local:
@@ -148,7 +150,7 @@ def load_vocoder(vocoder_name="vocos", is_local=False, local_path="", device=dev
 # load asr pipeline
 
 asr_pipe = None
-
+WHISPER_MODEL_PATH = r"D:\Dre\F5-TTS\model\whisper-large-v3-turbo"
 
 def initialize_asr_pipeline(device: str = device, dtype=None):
     if dtype is None:
@@ -162,7 +164,9 @@ def initialize_asr_pipeline(device: str = device, dtype=None):
     global asr_pipe
     asr_pipe = pipeline(
         "automatic-speech-recognition",
-        model="openai/whisper-large-v3-turbo",
+        model=WHISPER_MODEL_PATH,
+        tokenizer=WHISPER_MODEL_PATH,
+        feature_extractor=WHISPER_MODEL_PATH,
         torch_dtype=dtype,
         device=device,
     )
@@ -402,6 +406,7 @@ def infer_process(
     # Split the input text into batches
     audio, sr = torchaudio.load(ref_audio)
     max_chars = int(len(ref_text.encode("utf-8")) / (audio.shape[-1] / sr) * (22 - audio.shape[-1] / sr) * speed)
+    max_chars = max(150, min(max_chars, 450))
     gen_text_batches = chunk_text(gen_text, max_chars=max_chars)
     for i, gen_text_i in enumerate(gen_text_batches):
         print(f"gen_text {i}", gen_text_i)

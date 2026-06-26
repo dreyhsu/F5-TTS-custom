@@ -51,15 +51,18 @@ DEFAULT_TTS_MODEL = "F5-TTS_v1"
 tts_model_choice = DEFAULT_TTS_MODEL
 
 DEFAULT_TTS_MODEL_CFG = [
-    "hf://SWivid/F5-TTS/F5TTS_v1_Base/model_1250000.safetensors",
-    "hf://SWivid/F5-TTS/F5TTS_v1_Base/vocab.txt",
+    r'D:\Dre\F5-TTS\model\F5-TTS\model_1250000.safetensors',
+    r"D:\Dre\F5-TTS\model\F5-TTS\vocab.txt",
     json.dumps(dict(dim=1024, depth=22, heads=16, ff_mult=2, text_dim=512, conv_layers=4)),
 ]
 
 
 # load models
 
-vocoder = load_vocoder()
+vocoder = load_vocoder(
+    is_local=True,
+    local_path=r"D:\Dre\F5-TTS\model\vocos-mel-24khz",
+)
 
 
 def load_f5tts():
